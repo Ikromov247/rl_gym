@@ -21,19 +21,20 @@ env.reset(seed=42)
 experiment = mlflow.set_experiment('cart_pole')
 run_name = 'cart_pole rl'
 
-cart_position = 8
-cart_velocity = 6 
+# buckets
+cart_position = 10
+cart_velocity = 8 
 pole_angle = 10 
-pole_velocity = 10
+pole_velocity = 14
 cart_velocity_bounds = (-1.2, 1.2)
-pole_velocity_bounds = (-1.2, 1.2)
+pole_velocity_bounds = (-2.0, 2.0)
 
-n_episodes=12000
-alpha=0.05
-gamma=0.995
+n_episodes=15000
+alpha=0.08
+gamma=0.999
 epsilon_start=1.0
-epsilon_end=0.01
-epsilon_decay=4000
+epsilon_end=0.001
+epsilon_decay=5000
 
 # In[7]:
 

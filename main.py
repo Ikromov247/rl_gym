@@ -4,6 +4,7 @@
 # In[1]:
 import numpy as np
 import mlflow
+import pickle
 
 # In[2]:
 import gymnasium as gym
@@ -21,19 +22,20 @@ env.reset(seed=42)
 experiment = mlflow.set_experiment('cart_pole')
 run_name = 'cart_pole rl'
 
-cart_position = 8
-cart_velocity = 6 
-pole_angle = 10 
-pole_velocity = 10
-cart_velocity_bounds = (-1.2, 1.2)
-pole_velocity_bounds = (-1.2, 1.2)
+# buckets
+cart_position = 6
+cart_velocity = 11 
+pole_angle = 19 
+pole_velocity = 14
+cart_velocity_bounds = (-1.27, 1.83)
+pole_velocity_bounds = (-2.0, 1.65)
 
-n_episodes=12000
-alpha=0.05
-gamma=0.995
+n_episodes=15000
+alpha=0.0377
+gamma=0.9989
 epsilon_start=1.0
-epsilon_end=0.01
-epsilon_decay=4000
+epsilon_end=0.001
+epsilon_decay=1178
 
 # In[7]:
 
@@ -238,7 +240,8 @@ q_table, total_episode_states = train_agent(
     epsilon_decay=epsilon_decay
 )
 
-
+# save the q_table 
+np.save("q_table.npy", q_table)
 # In[15]:
 
 
@@ -263,7 +266,7 @@ params = {
     "epsilon_decay": epsilon_decay
 }
 
-with mlflow.start_run(run_name=run_name) as run:
+with mlflow.start_run() as run:
     mlflow.log_metric('average_test_length', avg_length)
     
     average_train_reward = np.mean(total_episode_states['batch_reward_mean']).round(0)
@@ -271,5 +274,5 @@ with mlflow.start_run(run_name=run_name) as run:
 
     average_train_std = np.mean(total_episode_states['batch_reward_std']).round(0)
     mlflow.log_metric('average_train_std', average_train_std)
-
-    mlflow.log_metrics(params)
+    mlflow.log_artifact('q_table.npy')
+    mlflow.log_params(params)

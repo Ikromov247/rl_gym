@@ -1,9 +1,13 @@
+#custom
+mlruns/
+*.npy
+models/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
 *$py.class
 
-mlruns/
 # C extensions
 *.so
 
